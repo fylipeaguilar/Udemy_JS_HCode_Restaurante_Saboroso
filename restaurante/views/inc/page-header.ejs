@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html>
+
+<!-- Fazendo a chamada de parte de códigos que se repetem -->
+<!-- usado o include por (ejs) -->
+<%- include("head") -%>
+
+<body>
+
+	<div class="gtco-loader"></div>
+
+	<div id="page">
+		<!-- Include do Header do Menu -->
+		<!-- Fazendo a chamada de parte de códigos que se repetem -->
+		<!-- usado o include por (ejs) -->
+		<%- include("header-menu") -%>
+
+        <% 
+        
+            if (typeof isHome === 'boolean' && isHome ) { %>
+
+                <!-- Include do Header do Index -->
+                <!-- Fazendo a chamada de parte de códigos que se repetem -->
+                <!-- usado o include por (ejs) -->
+                <%- include("header-index") -%>
+
+            <% } else { %>
+
+                <!-- Include do Header do Index -->
+                <!-- Fazendo a chamada de parte de códigos que se repetem -->
+                <!-- usado o include por (ejs) -->
+                <%- include("header") -%>
+                
+            <% } %>
+        
+        %>

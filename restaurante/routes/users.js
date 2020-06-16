@@ -9,8 +9,10 @@ var router = express.Router();
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   
+  // res.send('Acessando a rota antes de implementar a conexão com a base de dados!!')
+
   // Modelo de uso do select (https://www.npmjs.com/package/mysql2)
-  conn.query|("SELECT * FROM tb_users ORDER BY name", (err, results) => {
+  conn.query("SELECT * FROM tb_users ORDER BY name", (err, results) => {
 
     if(err){
 

@@ -1,0 +1,19 @@
+<!-- Realizando um check para verificar se a variável "error" existe -->
+<% if (typeof error === 'string') { %>
+
+    <!-- Mensagem de erro para formulário imcompleto -->
+    <div class="alert alert-danger">
+        <%= error %>
+    </div>
+
+<% } %>
+
+<!-- Realizando um check para verificar se a variável "success" existe -->
+<% if (typeof success === 'string') { %>
+
+    <!-- Mensagem de erro para formulário imcompleto -->
+    <div class="alert alert-success">
+        <%= success %>
+    </div>
+
+<% } %>

@@ -1,6 +1,7 @@
 // ***** Arquivo Gerenciar as regras de negócio de reservas ************//
 
-var conn = require('./db')
+var conn = require('./db');
+var path = require('path');
 
 // Método para renderizar os dados do contatos
 // caso o formulário esteja incompleto
@@ -44,29 +45,30 @@ module.exports = {
                 INSERT INTO tb_reservations (name, email, people, date, time) values (?, ?, ?, ?, ?)
 
             `, 
-                // 2º argumento são os valores
-                // Os "?" serão trocados pelos parâmetros
-                [
-                    fields.name,
-                    fields.email,
-                    fields.people,
-                    fields.date,
-                    fields.time
-                ],
+                
+            // 2º argumento são os valores
+            // Os "?" serão trocados pelos parâmetros
+            [
+                fields.name,
+                fields.email,
+                fields.people,
+                fields.date,
+                fields.time
+            ],
 
-                // 3º argumento do método query é a função de callback
-                // Se funcionou ou não e o que fazer 
-                (err, results) => {
+            // 3º argumento do método query é a função de callback
+            // Se funcionou ou não e o que fazer 
+            (err, results) => {
 
-                    if(err) {
+                if(err) {
 
-                        reject(err)
+                    reject(err)
 
-                    } else {
+                } else {
 
-                        resolve(results)
+                    resolve(results)
 
-                    }
+                }
 
             })
 

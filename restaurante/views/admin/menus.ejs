@@ -68,7 +68,7 @@
     <div class="modal fade" id="modal-create">
       <div class="modal-dialog">
         <div class="modal-content" style="border-top: 3px solid #00a65a;">
-          <form method="post">
+          <form method="post" action="/admin/menus">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -108,7 +108,7 @@
     <div class="modal fade" id="modal-update">
       <div class="modal-dialog">
         <div class="modal-content" style="border-top: 3px solid #00c0ef;">
-          <form method="post">
+          <form method="post" action="/admin/menus">
             <input type="hidden" name="id">
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -149,46 +149,44 @@
 <!-- Utilizando o sistema de includes -->
 <%- include('inc/footer') -%>
 
-<!-- Criando as interfaces de JavaScript para desenvolver o CRUD -->
+<!-- Criando um plugin para "gerenciar" as imagens -->
+<script src="/js/image-filereader.js"></script>
+<!-- Criando um plugin para "gerenciar" os updates -->
+<script srsc="/js/formsave.js"></script>
 
+<!-- Criando as interfaces de JavaScript para desenvolver o CRUD -->
 <script>
+
+    new ImageFileReader('#modal-create [type=file]', '#modal-create img')
+    new ImageFileReader('#modal-update [type=file]', '#modal-update img')
 
     // Selecionando o botão "novo", para criar um novo prato
     let formCreate = document.querySelector('#modal-create form');
 
-    formCreate.addEventListener('submit', e => {
+    formCreate.save().then(json => {
 
-        // Cancelar o envio padrão do formulário para não enviar o post ainda
-        e.preventDefault();
+      // Vamos o "reload" no caso de sucesso da promessa
+      window.location.reload();
 
-        // Criando um objeto com os dados
-        let formCreateData = new FormData(formCreate);
+    }).catch( err => {
 
-        // Passando os dados para o nosso servidor via AJAX
-        // Fetch(buscar): fetch("route").then => O método "fetch"
-        fetch("/admin/menus", {
+      console.log(err)
 
-          // Alterar o método para POST
-          method: 'POST',
-          // Passando os dados do formuláio
-          body: formCreateData
+    })
 
-        })
-        // Esse "response" são os dados de envio do servidor
-        // e não do conteúdo da mensagem. Por isso o "response.JSON()"
-        .then(response => response.json())
-        // Assim temos uma nova promessa.
-        // Agora o "json" tem o conteúdo dos dados
-        .then(json => {
-
-            // Atualizar a tela após clicar no botão "salvar"
-            window.location.reload();
-
-        })
-
-    });
 
     let formUpdate = document.querySelector('#modal-update form');
+
+    // formUpdate.save().then(json => {
+
+    // // Vamos o "reload" no caso de sucesso da promessa
+    // window.location.reload();
+
+    // }).catch(err => {
+
+    // console.log(err);
+
+    // });
 
     // Selecionar todos os todos de "update"
     // Temos também que converter no array, usando o nosso operador sprad
@@ -213,7 +211,7 @@
             switch(name){
 
               case 'photo':
-
+                formUpdate.querySelector("img").src = '/'+data[name]
                 break;
 
               default:

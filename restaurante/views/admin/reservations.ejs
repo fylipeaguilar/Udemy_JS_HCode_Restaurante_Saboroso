@@ -33,7 +33,7 @@
                     <div class="input-group-addon">
                       <i class="fa fa-calendar"></i>
                     </div>
-                    <input type="date" name="start" class="form-control unstyled" value="<%= date.start %>">
+                    <input type="date" name="start" class="form-control unstyled">
                   </div>
                 </div>
                 <div class="form-group" style="width: 182px; float: left">
@@ -41,7 +41,7 @@
                     <div class="input-group-addon">
                       até
                     </div>
-                    <input type="date" name="end" class="form-control unstyled" value="<%= date.end %>">
+                    <input type="date" name="end" class="form-control unstyled">
                   </div>
                 </div>
                 <div class="form-group" style="float: left; margin-left: 7px;">
@@ -200,3 +200,43 @@
 
 <!-- Utilizando o sistema de includes -->
 <%- include('inc/footer') -%>
+
+
+<!-- Criando um plugin para "gerenciar" os updates -->
+<script src="/js/formsave.js"></script>
+
+<script>
+
+  //********** Código para criar novas de reservas **********//
+  let formCreate = document.querySelector('#modal-create form');
+
+  formCreate.save().then(json => {
+
+    // Vamos o "reload" no caso de sucesso da promessa
+    window.location.reload();
+
+  }).catch(err => {
+
+    console.log(err)
+
+  })
+
+  //***** Código para atualização dos dados de reservas *****//
+  let formUpdate = document.querySelector('#modal-update form');
+
+  formUpdate.save().then(json => {
+
+    // Vamos o "reload" no caso de sucesso da promessa
+    window.location.reload();
+
+  }).catch(err => {
+
+    console.log(err);
+
+  });
+
+
+
+
+
+</script>

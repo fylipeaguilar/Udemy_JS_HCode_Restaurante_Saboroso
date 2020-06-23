@@ -39,6 +39,7 @@ app.use(function(req, res, next){
     // Fazer o parse dos dados
     form.parse(req, function(err, fields, files) {
       
+      req.body = fields;
       req.fields = fields;
       req.files = files;
 
@@ -57,7 +58,7 @@ app.use(function(req, res, next){
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-// Configurando o meadlleware (implementado junto com a session via redis)
+// Configurando o middleware (implementado junto com a session via redis)
 app.use(session({
 
     store: new RedisStore({
@@ -81,7 +82,7 @@ app.use(session({
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+//app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 

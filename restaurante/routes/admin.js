@@ -12,10 +12,15 @@ var admin = require('./../inc/admin')
 // Importando ao arquivos de manipulação dos dados de menus do banco de dados
 var menus = require ('./../inc/menus')
 
+// Importando ao arquivos de manipulação dos dados de menus do banco de dados
+var reservations = require ('./../inc/reservations')
+
 // Primeiramente importar o método para Rotas
 var router = express.Router()
 
-// ******** Middleware em nível de Roteador (rotas) *********/
+
+//************* INíCO DOS MIADDLEWARES ****************************/
+//************* Middleware em nível de Roteador (rotas) ***********/
 // Criando um middleware para tratar as sessions
 // Esse middleware faz a "interferência" nas rotas
 // Lembrando que o middleware nada mais do que uma função
@@ -39,7 +44,6 @@ router.use(function(req, res, next){
     
 })
 
-
 // ******** Middleware em nível de Roteador (rotas) *********/
 // Criando um middleware para tratar os menus dinamicamente
 // Esse middleware faz a "interferência" nas rotas
@@ -54,16 +58,10 @@ router.use(function(req, res, next){
     
 })
 
-router.get('logout', function(req, res, next){
+//************* FIM DOS MIADDLEWARES ****************************/
 
-    // Retira o "user" do nosso "session"
-    delete req.session.user;
 
-    // Força uma renderização para a nossa página de login
-    res.redirect('admin/login')
-
-})
-
+//************ INICO DAS ROTAS LOGIN/LOGOUT **************************//
 // Rota a ser consumida
 router.get('/', function(req, res, next) {
 
@@ -82,6 +80,16 @@ router.get('/', function(req, res, next) {
             console.error(err)
 
     })
+
+})
+//************ FIM DAS ROTAS INDEX **************************//
+
+//************ INICO DAS ROTAS LOGIN/LOGOUT **************************//
+// Rota a ser consumida
+router.get('/login', function(req, res, next) {
+
+    // Criar o render para renderizar a página
+    users.render(req, res, null)
 
 })
 
@@ -119,13 +127,19 @@ router.post('/login', function(req, res, next) {
 
 })
 
-// Rota a ser consumida
-router.get('/login', function(req, res, next) {
+router.get('logout', function(req, res, next){
 
-    // Criar o render para renderizar a página
-    users.render(req, res, null)
+    // Retira o "user" do nosso "session"
+    delete req.session.user;
+
+    // Força uma renderização para a nossa página de login
+    res.redirect('admin/login')
 
 })
+//************ FIM DAS ROTAS LOGIN/LOGOUT **************************//
+
+
+//************ INICIO DAS ROTAS CONTACTS **************************//
 
 // Rota a ser consumida
 router.get('/contacts', function(req, res, next) {
@@ -135,6 +149,9 @@ router.get('/contacts', function(req, res, next) {
 
 })
 
+//************ FIM DAS ROTAS CONTACTS **************************//
+
+//************ INICIO DAS ROTAS EMAIL **************************//
 
 // Rota a ser consumida
 router.get('/emails', function(req, res, next) {
@@ -143,6 +160,11 @@ router.get('/emails', function(req, res, next) {
     res.render('admin/emails',  admin.getParams(req))
 
 })
+
+//************ FIM DAS ROTAS EMAILS **************************//
+
+
+//************ INICIO DAS ROTAS MENUS **************************//
 
 // Rota a ser consumida
 router.get('/menus', function(req, res, next) {
@@ -185,6 +207,27 @@ router.post('/menus', function(req, res, next) {
 
 })
 
+// Rota para apagar um prato do menu na base de dados
+// Já podemos passar o "id" na rota
+router.delete('/menus/:id', function(req, res, next){
+
+    // Também é uma promessa
+    // req.params.id (id que é o parâmetro da requisição)
+    menus.delete(req.params.id).then(results => {
+
+        res.send(results)
+
+    }).catch(err => {
+
+        res.send(err)
+
+    });
+
+})
+//************ FIM DAS ROTAS MENUS **************************//
+
+//************ INICIO DAS ROTAS RESERVATIONS **************************//
+
 // Rota a ser consumida
 router.get('/reservations', function(req, res, next) {
 
@@ -197,6 +240,43 @@ router.get('/reservations', function(req, res, next) {
 
 })
 
+// Rota de envio dos dados do frontend para o banckend
+// Rota para adicionar um novo prato ao banco de dados
+
+router.post('/reservations', function(req, res, next) {
+
+    reservations.save(req.fields).then(results => {
+
+        res.send(results)
+
+    }).catch(err => {
+
+        res.send(err)
+
+    });
+
+})
+
+// Rota para apagar um prato do menu na base de dados
+// Já podemos passar o "id" na rota
+router.delete('/reservations/:id', function(req, res, next){
+
+    // Também é uma promessa
+    // req.params.id (id que é o parâmetro da requisição)
+    reservations.delete(req.params.id).then(results => {
+
+        res.send(results)
+
+    }).catch(err => {
+
+        res.send(err)
+
+    });
+
+})
+//************ FIM DAS ROTAS RESERVATIONS **************************//
+
+//*************** INICIO DAS ROTAS USERS **************************//
 // Rota a ser consumida
 router.get('/users', function(req, res, next) {
 
@@ -206,3 +286,5 @@ router.get('/users', function(req, res, next) {
 })
 
 module.exports = router
+
+//************ FIM DAS ROTAS USERS **************************//

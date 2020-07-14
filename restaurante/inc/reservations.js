@@ -1,7 +1,7 @@
 // ***** Arquivo Gerenciar as regras de negócio de reservas ************//
 
 var conn = require('./db');
-// var path = require('path');
+var path = require('path');
 
 // Método para renderizar os dados do contatos
 // caso o formulário esteja incompleto
@@ -26,6 +26,36 @@ module.exports = {
 
     },
 
+    // Método para listar os "menus" do banco de dados mySQL
+    getReservations() {
+
+        return new Promise((resolve, reject) => {
+
+            conn.query(`
+
+            SELECT * FROM
+                tb_reservations
+            ORDER BY 
+                date, time
+            DESC;
+
+            ` ,  (err, results) => {
+
+                if(err) {
+
+                    reject(err);
+
+                }
+
+                console.log(results)
+                resolve(results);
+
+            });
+
+        });
+    
+    },
+
     // Receber os campos como parâmetro
     save(fields) {
 
@@ -33,10 +63,15 @@ module.exports = {
         // significa que temos uma "Promessa"
         return new Promise((resolve, reject) => {
 
-            // Precisamos colocar a data do padrão do mySQL "AAAA/MM/DD"
-            let date = fields.date.split('/');
+            //indexOf: procura um caracter dentro da variável
+            if(fields.date.indexOf('/') > -1) {
 
-            fields.date = `${date[2]}-${date[1]}-${date[0]}`;
+                // Precisamos colocar a data do padrão do mySQL "AAAA/MM/DD"
+                let date = fields.date.split('/');
+
+                fields.date = `${date[2]}-${date[1]}-${date[0]}`;
+
+            }
 
             let query, params =   [
                 fields.name,
@@ -51,7 +86,7 @@ module.exports = {
                 // Vai ser o update
                 query = `
 
-                    UPDATE FROM tb_reservations 
+                    UPDATE tb_reservations 
                         SET name = ?,
                             email = ?,
                             people = ?,
@@ -103,6 +138,37 @@ module.exports = {
             })
 
         })
+
+    },
+
+    delete(id){
+
+        return new Promise((resolve, reject) => {
+
+            conn.query(`
+
+                DELETE FROM tb_reservations
+                    WHERE id = ?
+
+            `, [
+
+                id
+
+            ], (err, results) => {
+
+                if(err) {
+
+                    reject(err)
+
+                } else {
+
+                    resolve(results)
+
+                }
+
+            })
+
+        });
 
     }
 

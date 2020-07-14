@@ -156,122 +156,41 @@
 <!-- Criando um plugin para "gerenciar" os updates -->
 <script src="/js/formsave.js"></script>
 
+<!-- Criando componente para o código ficar mais limpo -->
+<script src="/js/grid.js"></script>
+
 <!-- Criando as interfaces de JavaScript para desenvolver o CRUD -->
 <script>
+
 
   new ImageFileReader('#modal-create [type=file]', '#modal-create img')
   new ImageFileReader('#modal-update [type=file]', '#modal-update img')
 
-  // Selecionando o botão "novo", para criar um novo prato
-  let formCreate = document.querySelector('#modal-create form');
 
-  formCreate.save().then(json => {
+  // Grid 
+  new Grid({
 
-    // Vamos o "reload" no caso de sucesso da promessa
-    window.location.reload();
+    deleteUrl: '/admin/menus/${data.id}',
+    deleteMsg: "Deseja excluir o item ${data.title}?",
 
-  }).catch(err => {
+    // Tratando o case "photo"
+    onUpdateLoad: (formUpdate, name, data) => {
 
-    console.log(err)
+      // Para cada um dos "names" que encontrarmos 
+      let input = formUpdate.querySelector(`[name=${name}]`);
 
-  })
+      switch (name) {
 
+        case 'photo':
+          formUpdate.querySelector('img').src = '/' + data[name]
+          break;
 
-  let formUpdate = document.querySelector('#modal-update form');
-
-  formUpdate.save().then(json => {
-
-    // Vamos o "reload" no caso de sucesso da promessa
-    window.location.reload();
-
-  }).catch(err => {
-
-    console.log(err);
-
-  });
-
-  // Selecionar todos os todos de "delete" para pegar o "id" no frontend
-  // Temos também que converter no array, usando o nosso operador sprad
-  [...document.querySelectorAll('.btn-delete')].forEach(btnDelete => {
-
-    btnDelete.addEventListener('click', e => {
-
-      // Pegando a "tr" do botão, para pegar os dados dos campos
-      let tr = e.path.find(el => {
-
-        return (el.tagName.toUpperCase() === 'TR')
-
-      })
-
-      // Obs.: Lembrando que o dataset só armazena string
-      let data = JSON.parse(tr.dataset.row)
-
-      // UX - Perguntar se o usuário realmente deseja excluir 
-      if (confirm(`Deseja excluir o item ${data.title}?`)) {
-
-        //console.log(data.id);
-        // Chamando a requisição para deletar o prato do menu
-        fetch(`/admin/menus/${data.id}`, {
-
-          method: 'DELETE'
-
-        })
-          .then(response => response.json())
-          .then(json => {
-
-            // console.log(json)
-            window.location.reload();
-
-          });
-
+        default:
+          if (input) input.value = data[name];
       }
 
-    });
+    }
 
   });
-
-
-  // Selecionar todos os todos de "update"
-  // Temos também que converter no array, usando o nosso operador sprad
-  [...document.querySelectorAll('.btn-update')].forEach(btnUpdate => {
-
-    btnUpdate.addEventListener('click', e => {
-
-      // Pegando a "tr" do botão, para pegar os dados dos campos
-      let tr = e.path.find(el => {
-
-        return (el.tagName.toUpperCase() === 'TR')
-
-      })
-
-      // Obs.: Lembrando que o dataset só armazena string
-      let data = JSON.parse(tr.dataset.row)
-
-      // Agora que temos o objeto podemos fazer o forIn
-
-      for (let name in data) {
-
-        switch (name) {
-
-          case 'photo':
-            formUpdate.querySelector("img").src = '/' + data[name]
-            break;
-
-          default:
-            // Para cada um dos "names" que encontrarmos 
-            let input = formUpdate.querySelector(`[name=${name}]`);
-            if (input) input.value = data[name];
-
-        }
-
-      }
-
-      // $('') => jQuery
-      $('#modal-update').modal('show');
-      // console.log(data)
-
-    })
-
-  })
 
 </script>

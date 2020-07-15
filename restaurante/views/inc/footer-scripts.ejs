@@ -21,6 +21,45 @@
 <script src="js/moment.min.js"></script>
 <script src="js/bootstrap-datetimepicker.min.js"></script>
 
+<!-- JavaScript do envio de formulário (cadastro de email) -->
+<script src="js/formsave.js"></script>
 
 <!-- Main -->
 <script src="js/main.js"></script>
+
+<!-- Configurando o formulários para enviar os dados
+para o banco de dados (cadastro de email) -->
+
+<script>
+
+    // Selecionar o formulario pelo "id"
+    let formSubscribe = document.querySelector('#form-subscribe');
+
+    // Verificar se o formulário existe, antes de executarmos uma ação
+    if (formSubscribe) {
+
+        formSubscribe.save({
+
+            success: () => {
+
+                alert("Email cadastrado com sucessso");
+
+            },
+
+            failure: (err) => {
+
+                alert(err);
+
+            }
+
+            // failure: (err) => {
+
+            //     alert(err);
+
+            // }
+
+        })
+
+    }
+
+</script>

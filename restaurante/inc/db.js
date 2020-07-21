@@ -10,8 +10,12 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'user',
   database: 'saboroso',
-  password: 'password'
-  
+  password: 'password',
+
+  // Configuracao para habilitar o myQSL
+  // via JavaScript, executar 2 comandos
+  multipleStatements: true
+
 });
 
 // Fazendo o exporte para quem fez a chamada

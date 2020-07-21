@@ -38,6 +38,8 @@ para o banco de dados (cadastro de email) -->
     // Verificar se o formulário existe, antes de executarmos uma ação
     if (formSubscribe) {
 
+
+        // ******* Fim - Usando o método fetch() ****************//
         formSubscribe.save({
 
             success: () => {
@@ -52,13 +54,19 @@ para o banco de dados (cadastro de email) -->
 
             }
 
-            // failure: (err) => {
-
-            //     alert(err);
-
-            // }
-
         })
+        // ******* Fim - Usando o método fetch() ****************//
+
+
+
+        // formSubscribe.save({
+        //     success: () => {
+        //         alert("Email cadastrado com sucessso");
+        //     },
+        //     failure: (err) => {
+        //         alert(err);
+        //     }
+        // })
 
     }
 

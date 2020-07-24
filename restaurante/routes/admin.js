@@ -43,13 +43,15 @@ module.exports = function (io) {
     // Lembrando que o middleware nada mais do que uma função
     router.use(function (req, res, next) {
 
+        console.log("Entrei no Middleware da rota do login: ", req.body)
+
         // Criando uma validação de sessão
         // Caso não exista uma "session" para o user
         // redireciona a página para "admin/login"
         // Obs.: Se for a rota "login", que está dentro de "admin",
         // essa não deve ser checada
         if (['/login'].indexOf(req.url) === -1 && !req.session.user) {
-
+        
             // Criar o render para renderizar a página
             res.redirect('/admin/login')
 

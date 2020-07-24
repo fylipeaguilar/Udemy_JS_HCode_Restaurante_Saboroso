@@ -1,7 +1,7 @@
 // Como vamos acessar o banco de dados
 // temos que criar a nossa conexao
 var conn = require('./db');
-const { param } = require('../routes/admin');
+//const { param } = require('../routes/admin');
 
 // Criamos um módulo, que exporta um objeto
 module.exports = {

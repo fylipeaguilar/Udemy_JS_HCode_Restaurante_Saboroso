@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    
     "start": "nodemon app.js"
   },
   "dependencies": {
@@ -11,7 +10,7 @@
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "ejs": "~2.6.1",
-    "express": "^4.15.2",
+    "express": "^4.17.1",
     "express-session": "^1.17.1",
     "formidable": "^1.2.2",
     "http-errors": "~1.6.3",

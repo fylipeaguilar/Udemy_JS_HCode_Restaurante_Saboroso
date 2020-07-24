@@ -24,7 +24,6 @@ var socket = require('socket.io')
 
 // Para usar para fazer os uploads via "path"
 var path = require('path');
-const router = require('./routes/admin');
 
 var app = express();
 
@@ -68,7 +67,9 @@ app.use(function (req, res, next) {
 
   req.body = {};
 
-  if ((req.method === 'POST') && (req.path != '/admin/login')) {
+  if ((req.method === 'POST')
+    // && (req.path != '/admin/login')
+  ) {
 
     //(https://www.npmjs.com/package/formidable)
     var form = formidable.IncomingForm({
@@ -123,8 +124,11 @@ app.use(session({
 }))
 
 app.use(logger('dev'));
+
+// app.use(bodyParser.json());
 // app.use(express.json());
 // app.use(express.urlencoded({ extended: false }));
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -151,7 +155,7 @@ app.use(function (err, req, res, next) {
 // Implementação do socket.io
 http.listen(3000, function () {
 
-  console.log("Servidor em excucao!!!")  
+  console.log("Servidor em excucao!!!")
 
 })
 
